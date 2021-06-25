@@ -54,22 +54,26 @@ void match_features(vector<Mat>& descriptor_for_all, vector<vector<DMatch>>& mat
 void save_structure(string file_name, vector<Mat>& rotations, vector<Mat>& motions, vector<Point3f>& structure, vector<Vec3b>& colors);
 
 vector<string> img_names;
+vector<string> depth_names;
 
 void cameraInit()
 {
 	string filename;
 
-	for (int i = 1; i < num; i++) {
-		filename = dir + string_format("img (%d).png", i);
+	for (int i = 0; i < 500; i = i + num) {
+		filename = dir + string_format("img_%04d.png", i);
 		img_names.push_back(filename);
 
-		Mat test = imread(filename, 1);
+		Mat test = imread(filename, 0);
 		imshow("test", test);
 		waitKey(27);
+
+		filename = "M:/drive/Etri_Code/mypython/costvolume_based_network(IWAIT2021 version)/original_depth_2/" + string_format("depth_%04d.png", i);
+		depth_names.push_back(filename);
 	}
 
 	vector<vector<KeyPoint>> key_points_for_all;			// 이미지 당 키포인트
-	vector<Mat> descriptor_for_all;							// 각 이미지 당 descriptor. 근데 왜 하나의 Matㅇ로 되어 있을까 궁금하다
+	vector<Mat> descriptor_for_all;							// 각 이미지 당 descriptor. 근데 왜 하나의 Mat으로 되어 있을까 궁금하다
 	vector<vector<Vec3b>> colors_for_all;					// all 이미지의 color
 	vector<vector<DMatch>> matches_for_all;					// all 이미지의 매치 정보
 
@@ -162,7 +166,6 @@ void cameraInit()
 		// 결국 structure가 엄청 늘어나겠다
 	}
 
-	//괏닸
 	//save_structure("structure.yml", rotations, motions, structure, colors);
 	cout << "successful!!!" << endl;
 	//getchar();
@@ -538,6 +541,7 @@ void reconstruct(Mat& K, Mat& R1, Mat& T1, Mat& R2, Mat& T2, vector<Point2f>& p1
 
 	// 갑작스러운 s...? s는 누구세요 -> 여기서 뭔가 z를 통해 구할 수 있을 것 같아!!
 	// s는 point 4D야. 과연 s는 뭐하는 놈일까 ( points4D )
+
 	Mat s;
 	triangulatePoints(proj1, proj2, p1, p2, s);
 

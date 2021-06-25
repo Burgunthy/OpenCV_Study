@@ -18,10 +18,12 @@
 #include <fstream>
 #include <string>
 
+#include "json/json.h"
+
 using namespace cv;
 using namespace std;
 
-#define num 30
+#define num 3
 
 int frame = 0;
 string dir;
@@ -42,6 +44,7 @@ Mat K(Matx33d(
 
 Mat colorImage = cv::Mat::zeros(frameSize, CV_8UC3);
 Mat depthImage = cv::Mat::zeros(frameSize, CV_16SC1);
+Mat depthImage2;
 Mat grayImage = cv::Mat::zeros(frameSize, CV_8UC1);
 
 // Occlusion Aware
